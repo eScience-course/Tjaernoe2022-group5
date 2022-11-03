@@ -14,3 +14,4 @@
 
 Specific things:
 -separate wind and moisture, the trends we see is it because of a change in moisture or wind or both? make separate climatology plots.
+-show satellite figure and 

@@ -1,6 +1,7 @@
 
 def to_nc(indata, lat_test, lon_test, tts, fln):
     from netCDF4 import Dataset
+    import numpy as np
     nc = Dataset(fln, 'w')
     lat_dim = nc.createDimension('lat', indata.shape[1])
     lon_dim = nc.createDimension('lon', indata.shape[2])

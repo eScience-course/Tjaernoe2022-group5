@@ -10,3 +10,8 @@
 -Can we validate the AR detection product for CMIP6 against ERA5 data?
 
 -What is the impact of AR on polar aerosols and clouds and how will it change in the future?
+
+
+Specific things:
+-separate wind and moisture, the trends we see is it because of a change in moisture or wind or both? make separate climatology plots.
+-show satellite figure and 

@@ -3,3 +3,7 @@ Quantification of aerosol transport to the poles occuring in Atmospheric Rivers
 Compare ERA5 2020 to Wille 2020
 Then compare CMIP 2004-2014 to ERA5
 Then use CMIP only
+
+Plot April 2020 event satellite for clouds + aerosols from CAMS? => context for presentation saturday
+
+Use deposition monthly also and compare seasonal cycles

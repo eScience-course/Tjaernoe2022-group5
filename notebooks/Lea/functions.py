@@ -30,3 +30,23 @@ def compute_ivt(q,v,p):
     v_ = v
     iv_ = -1/g*np.sum(q_*v_*dp_,axis=1)
     return iv_
+
+def count_ARs(ds, lat_cut):
+    '''
+    Counts number of AR at each time step. Returns dataset with added coordinate ar_counts_[lat_cut].
+    '''
+    if lat_cut<0:
+        pole_ds = ds.sel(lat= slice(-90, lat_cut))
+    else:
+        pole_ds = ds.sel(lat= slice(lat_cut, 90))
+ 
+    ar_counts = np.zeros(len(pole_ds.time))
+    for i,ts in enumerate(pole_ds.time):
+        ll = xr.plot.contour(pole_ds.sel(time=ts).ivt, levels=[0.0,1.0])
+        plt.close()
+        if len(ll.collections)>1: #You can remove this and next line if you have run it a few times without getting the printout :))
+            print('julia was wrong about something, tell her to fix it'+ts)
+        nr_ar = len(ll.collections[0].get_paths())
+        ar_counts[i] = nr_ar
+    ds[f'ar_counts_{lat_cut}']= ar_counts
+    return ds

@@ -57,11 +57,11 @@ cm245 = dset_dict[dataset_list[0]]
 #dset = dset.sel(member_id='r1i1p1f1',time=slice("2000-01-01", "2014-12-31"))
 cm245_3550 = cm245.sel(time = slice(str(start_year)+"-01-01", str(end_year)+"-12-31"))
 
-
-# In[15]:
-
-
-cm245_3550
+start_year2 = 2085
+end_year2 = 2100
+cm245 = dset_dict[dataset_list[0]]
+#dset = dset.sel(member_id='r1i1p1f1',time=slice("2000-01-01", "2014-12-31"))
+cm245_3550 = cm245.sel(time = slice(str(start_year2)+"-01-01", str(end_year2)+"-12-31"))
 
 
 # In[16]:
@@ -90,6 +90,15 @@ aod245_3550 = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year)+"-
 
 # In[ ]:
 
+# import AOD ssp245 for 2085-2100
+s3path = list([
+ 'escience2022/Remy/od550aer_AERday_NorESM2-LM_ssp245_r1i1p1f1_gn_20810101-20901231.nc',
+ 'escience2022/Remy/od550aer_AERday_NorESM2-LM_ssp245_r1i1p1f1_gn_20910101-21001231.nc'
+])
+
+sopenlist=[s3.open(ss) for ss in s3path]
+
+aod245_8500 = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year)+"-01-01", str(end_year)+"-12-31"))
 
 
 

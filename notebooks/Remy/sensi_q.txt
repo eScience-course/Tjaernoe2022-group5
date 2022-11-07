@@ -1,0 +1,10 @@
+Sensitivity test of AR detection to chosen percentile - CMIP6 2014
+test	AR count >60N	AR count <60S
+q90	352		391
+q91	291		339
+q92	233		286
+q93	201		255
+q94	164		201
+q95	119		152
+q96	89		99
+q98	34		34

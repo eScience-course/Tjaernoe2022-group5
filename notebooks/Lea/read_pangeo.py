@@ -30,5 +30,6 @@ def read_to_detect(start_year, end_year, experimentid):
     start_year_ = start_year
     end_year_ = end_year
     df = dset_dict[dataset_list[0]]
+    df = df.chunk(20)
     df_sliced = df.sel(time = slice(str(start_year)+"-01-01", str(end_year)+"-12-31"))
     return df_sliced

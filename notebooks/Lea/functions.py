@@ -28,6 +28,9 @@ def compute_ivt(q,v,p):
     p_ = pres_
     q_ = q
     v_ = v
+    print(q)
+    print(v)
+    print(p_)
     iv_ = -1/g*np.sum(q_*v_*dp_,axis=1)
     return iv_
 
@@ -50,3 +53,5 @@ def count_ARs(ds, lat_cut):
         ar_counts[i] = nr_ar
     ds[f'ar_counts_{lat_cut}']= ar_counts
     return ds
+
+

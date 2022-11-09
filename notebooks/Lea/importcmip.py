@@ -21,7 +21,7 @@ end_year0 = 2014
 '''start_year = 2035
 end_year = 2050'''
 start_year2 = 2085
-end_year2 = 2100
+end_year2 = 2099
 
 #historical
 s3path = list([
@@ -43,8 +43,8 @@ aod245_3550 = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year)+"-
     
 #ssp245 2085-2100
 s3path = list([
- 'escience2022/Remy/od550aer_AERday_NorESM2-LM_ssp245_r1i1p1f1_gn_20310101-20401231.nc',
- 'escience2022/Remy/od550aer_AERday_NorESM2-LM_ssp245_r1i1p1f1_gn_20410101-20501231.nc'
+    'escience2022/Remy/od550aer_AERday_NorESM2-LM_ssp245_r1i1p1f1_gn_20810101-20901231.nc',
+    'escience2022/Remy/od550aer_AERday_NorESM2-LM_ssp245_r1i1p1f1_gn_20910101-21001231.nc'
 ])
 sopenlist=[s3.open(ss) for ss in s3path]
 aod245 = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year2)+"-01-01", str(end_year2)+"-12-31"))

@@ -31,7 +31,7 @@ s3path = list([
 sopenlist=[s3.open(ss) for ss in s3path]
 aodh = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year0)+"-01-01", str(end_year0)+"-12-31"))
 
-    '''
+'''
 #ssp245 2035-2050
 s3path = list([
  'escience2022/Remy/od550aer_AERday_NorESM2-LM_ssp245_r1i1p1f1_gn_20310101-20401231.nc',
@@ -39,7 +39,7 @@ s3path = list([
 ])
 sopenlist=[s3.open(ss) for ss in s3path]
 aod245_3550 = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year)+"-01-01", str(end_year)+"-12-31"))
-    '''
+'''
     
 #ssp245 2085-2100
 s3path = list([
@@ -47,7 +47,7 @@ s3path = list([
  'escience2022/Remy/od550aer_AERday_NorESM2-LM_ssp245_r1i1p1f1_gn_20410101-20501231.nc'
 ])
 sopenlist=[s3.open(ss) for ss in s3path]
-aod245 = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year)+"-01-01", str(end_year)+"-12-31"))
+aod245 = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year2)+"-01-01", str(end_year2)+"-12-31"))
 
 # ssp585 for 2085-2100
 s3path = list([

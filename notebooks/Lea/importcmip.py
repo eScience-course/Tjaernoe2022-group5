@@ -9,9 +9,7 @@ import cftime
 import numpy as np
 from netCDF4 import Dataset
 from matplotlib.colors import LogNorm
-import cartopy.crs as ccrs
-import cartopy
-from IPython import display
+
 
 s3 = s3fs.S3FileSystem(key="K1CQ7M1DMTLUFK182APD", secret="3JuZAQm5I03jtpijCpHOdkAsJDNLNfZxBpM15Pi0", client_kwargs=dict(endpoint_url="https://rgw.met.no"))
 
@@ -71,6 +69,15 @@ def read_370():
 
     sopenlist=[s3.open(ss) for ss in s3path]
     bucket370_8500 = (xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year2)+"-01-01", str(end_year2)+"-12-31"))
-    
+    '''
+    aer = bucket['od550aer'].values
+    corrected = bias_corrected(aodh['od550aer'].values, aer)
+    '''
     return bucket370_8500
 
+'''
+histo = aodh['od550aer'].values
+ssp245 = aod245['od550aer'].values
+ssp585 = aod585['od550aer'].values
+b245 = bias_correction(histo,ssp245)
+b585 = bias_correction(histo,ssp585)'''

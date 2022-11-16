@@ -165,7 +165,7 @@ def read_370(start_year, end_year):
     sopenlist=[s3.open(ss) for ss in s3path]
     bucket370_8500 = xr.open_mfdataset(sopenlist)).sel(time = slice(str(start_year)+"-01-01", str(end_year)+"-12-31")
     
-                                                       return bucket370_8500
+     return bucket370_8500
                                                        
 def to_nc(indata, lat_test, lon_test, tts, fln):
     from netCDF4 import Dataset
@@ -266,41 +266,21 @@ cm370b['od550aer'] = (['time','lat','lon'], b370[1])
 d370 = cm370.merge(cm370b.drop(('lat_bnds', 'time_bnds', 'lon_bnds')))
 
 # slice to poles and slice only until pressure levels where AR can be detected
-n245 = d245.sel(lat = slice(50,90),plev=slice(100000, 25000))
-s245 =d245.sel(lat = slice(-90,-50),plev=slice(100000, 25000))
+n245 = d245.sel(lat = slice(60,90),plev=slice(100000, 25000))
+s245 =d245.sel(lat = slice(-90,-60),plev=slice(100000, 25000))
 
-n370 = d370.sel(lat = slice(50,90),plev=slice(100000, 25000))
-s370 =d370.sel(lat = slice(-90,-50),plev=slice(100000, 25000))
+n370 = d370.sel(lat = slice(60,90),plev=slice(100000, 25000))
+s370 =d370.sel(lat = slice(-90,-60),plev=slice(100000, 25000))
 
-n585 = d585.sel(lat = slice(50,90),plev=slice(100000, 25000))
-s585 =d585.sel(lat = slice(-90,-50),plev=slice(100000, 25000))
+n585 = d585.sel(lat = slice(60,90),plev=slice(100000, 25000))
+s585 =d585.sel(lat = slice(-90,-60),plev=slice(100000, 25000))
 
-nh = dh.sel(lat = slice(50,90), plev=slice(100000, 25000))
-sh =dh.sel(lat = slice(-90,-50), plev=slice(100000, 25000))
+nh = dh.sel(lat = slice(60,90), plev=slice(100000, 25000))
+sh =dh.sel(lat = slice(-90,-60), plev=slice(100000, 25000))
 
 
 ## mask data for being inside or outside of a atmospheric river
-# arctic
-masked_n245 = n245.where(ar245['ivt']==True)
-masked_n370 = n370.where(ar370['ivt']==True)
-masked_n585 = n585.where(ar585['ivt']==True)
-masked_nh = nh.where(arh['ivt']==True)
 
-neg_n245 = n245.where(ar245['ivt']==False)
-neg_n370 = n370.where(ar370['ivt']==False)
-neg_n585 = n585.where(ar585['ivt']==False)
-neg_nh = nh.where(arh['ivt']==False)
-
-# antarctic
-masked_s245 = s245.where(ar245['ivt']==True)
-masked_s370 = s370.where(ar370['ivt']==True)
-masked_s585 = s585.where(ar585['ivt']==True)
-masked_sh = sh.where(arh['ivt']==True)
-
-neg_s245 = s245.where(ar245['ivt']==False)
-neg_s370 = s370.where(ar370['ivt']==False)
-neg_s585 = s585.where(ar585['ivt']==False)
-neg_sh = sh.where(arh['ivt']==False)
                                                        
 #treat variables for plotting
 #integrate needed humidity
@@ -330,7 +310,9 @@ int_sh370 = int_sh370[~np.isnan(int_sh370)]
 int_nh585 = int_nh585[~np.isnan(int_nh585)]
 int_sh585 = int_sh585[~np.isnan(int_sh585)]
 int_nhh = int_nhh[~np.isnan(int_nhh)]
-int_shh = int_shh[~np.isnan(int_shh)]                                                  
+int_shh = int_shh[~np.isnan(int_shh)] 
+int_hum = pd.DataFrame(data=[int_nh245,int_sh245,int_nh370,int_sh370,int_nh585,int_sh585,int_nhh,int_shh]).T 
+int_hum.columns=['int_nh245','int_sh245','int_nh370','int_sh370','int_nh585','int_sh585','int_nhh','int_shh']                                                       
     # AOD
 na245 = masked_n245['od550aer'].values.flatten()  # for plotting with matplotlib: flatten db to array and substract average
 sa245 = masked_s245['od550aer'].values.flatten()
@@ -348,6 +330,29 @@ na585 = na585[~np.isnan(na585)]
 sa585 = sa585[~np.isnan(sa585)]
 nah = nah[~np.isnan(nah)]
 sah = sah[~np.isnan(sah)]
+aod = pd.DataFrame(data=[na245,sa245,na370,sa370,na585,sa585,nah,sah]).T 
+aod.columns = ['na245','sa245','na370','sa370','na585','sa585','nah','sah']   
+                                                      
+    # cloud cover
+nc245 = masked_n245['clt'].values.flatten()  # for plotting with matplotlib: flatten db to array and substract average
+sc245 = masked_s245['clt'].values.flatten()
+nc370 = masked_n370['clt'].values.flatten()
+sc370 = masked_s370['clt'].values.flatten()
+nc585 = masked_n585['clt'].values.flatten()
+sc585 = masked_s585['clt'].values.flatten()
+nch = masked_nh['clt'].values.flatten()
+sch = masked_sh['clt'].values.flatten()
+nc245 = na245[~np.isnan(nc245)] # remove na from dataset to be able to weight distribution
+sc245 = sa245[~np.isnan(sc245)]
+nc370 = na370[~np.isnan(nc370)]
+sc370 = sa370[~np.isnan(sc370)]
+nc585 = na585[~np.isnan(nc585)]
+sc585 = sa585[~np.isnan(sc585)]
+nch = nah[~np.isnan(nch)]
+sch = sah[~np.isnan(sch)]
+cloud = pd.DataFrame(data=[nc245,sc245,nc370,sc370,nc585,sc585,nch,sch]).T 
+cloud.columns = ['nc245','sc245','nc370','sc370','nc585','sc585','nch','sch']   
+                                                                                                              
     # precipitation                                                      
 np245 = masked_n245['pr'].values.flatten()  # for plotting with matplotlib: flatten db to array and substract average
 sp245 = masked_s245['pr'].values.flatten()
@@ -381,6 +386,9 @@ np585= np585*60*60*24
 sp585= sp585 *60*60*24
 nph= nph*60*60*24
 sph= sph*60*60*24
+precip = pd.DataFrame(data=[np245,sp245,np370,sp370,np585,sp585,nph,sph]).T 
+precip.columns = ['np245','sp245','np370','sp370','np585','sp585','nph','sph']                                                          
+                                                       
     # surface temperature
 #create average temperature for research area during modelling period to calculate anomaly
 avtn245 = n245['tas'].mean(['time','lat','lon'])
@@ -407,7 +415,9 @@ nt585 = nt585[~np.isnan(nt585)]
 st585 = st585[~np.isnan(st585)]
 nth = nth[~np.isnan(nth)]
 tph = sth[~np.isnan(sth)]
-                                  
+temp = pd.DataFrame(data=[nt245,st245,nt370,st370,nt585,st585,nth,sth]).T 
+temp.columns = ['nt245','st245','nt370','st370','nt585','st585','nth','sth']   
+                                                       
 # size for wilcoxon test arctic
    # humidity
 nh370sized = int_nh370[np.random.randint(0, len(int_nh370), 10000)]

@@ -216,9 +216,9 @@ def compute_threshold(start_year, end_year, experimentid):
     ivt_ns = xr.where(ivt_ns.lat<0,-ivt_ns,ivt_ns,True) # minus for southern hemisphere (positive toward the pole)
     ivt_ns_pos = xr.where(ivt_ns<0,ivt_ns*0,ivt_ns,True) # negative values = not poleward
 
-    q93 = ivt_ns_pos.chunk(dict(time=-1)).quantile(0.94,'time')   
+    q93 = ivt_ns_pos.chunk(dict(time=-1)).quantile(0.93,'time')   
     q93.to_netcdf('q93_2000.nc')
-    return print('finished computing; check if document q94_2000.nc was safed')   
+    return print('finished computing; check if document q93_2000.nc was safed')   
                                                        
                                                        
                                                        
@@ -433,7 +433,7 @@ nt370sized = nt370[np.random.randint(0, len(nt370), 10000)]
 nt245sized = nt245[np.random.randint(0, len(nt245), 10000)]
 nt585sized = nt585[np.random.randint(0, len(nt585), 10000)]
 nthsized = nth[np.random.randint(0, len(nth), 10000)]                                                     
-                                                       
+                                                    
 # size for wilcoxon test antarctic
    # humidity
 sh370sized = int_sh370[np.random.randint(0, len(int_sh370), 10000)]

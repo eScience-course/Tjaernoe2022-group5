@@ -66,7 +66,7 @@ def sort_ar_by_aod(aod_ds,ar_ds, poll_lim, clean_lim):
     aod_ar['poll_ar_counts']= (['time'], poll_ar_counts)
     return aod_ar
 
-def plot_hist(flat_vars, seasons, plotting_vars, pole_ds, skipmid=True):
+def plot_hist(flat_vars, seasons, plotting_vars, pole_ds, savename,skipmid=True):
     name_vars = ['Cloud fraction [%]', 'Precipitation [mm/day]', 'Surface temperature [K]', 'Downwelling longwave flux [W/m$^2$]']
     keys = ['Clean','Intermediate','Polluted']
     colors = ['tab:blue', 'tab:green','tab:orange']
@@ -87,11 +87,12 @@ def plot_hist(flat_vars, seasons, plotting_vars, pole_ds, skipmid=True):
                 ax.set_yscale('log')
             if ivar==0:
                 ax.legend()
-                ax.set_ylabel('Frequency distribution')
-                
+                ax.set_ylabel('Frequency distribution')     
         ax = plt.subplot(1,len(flat_vars)+1,len(flat_vars)+1)
         counts_sum = pole_ds.sel(time=(pole_ds.time.dt.month.isin(season))).sum(dim='time')
         ax.pie([counts_sum[count] for count in ['clean_ar_counts','mid_ar_counts','poll_ar_counts']]
                ,labels = keys, colors = colors, autopct='%1.f%%',shadow=True)
-    
         plt.tight_layout()
+        plt.savefig(f'figures/{savename}_{season[0]}.png')  
+    
+        

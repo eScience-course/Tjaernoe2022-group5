@@ -24,6 +24,23 @@ def count_ARs(ds, lat_cut):
     ds[f'ar_counts_{lat_cut}']= (['time'], ar_counts)
     return ds
 
+    
+def count_2020_ARs(ds, lat_cut):
+    if lat_cut<0:
+        pole_ds = ds.sel(lat= slice(-90, lat_cut))
+    else:
+        pole_ds = ds.sel(lat= slice(lat_cut, 90))
+    ar_counts = np.zeros(len(pole_ds.time))
+    for i,ts in enumerate(pole_ds.time):
+        ar_ts = pole_ds.sel(time = ts).ar_binary_tag.squeeze()
+        ar_ts = xr.where(ar_ts>=1,1,0)
+        ll = xr.plot.contour(ar_ts, levels=[0.0,1.0])
+        plt.close()
+        ar_list = np.array([len(p) for p in ll.collections[0].get_paths()])
+        ar_counts[i] = len(ar_list[ar_list>20])
+    ds[f'ar_counts_{lat_cut}']= (['time'], ar_counts)
+    return ds
+
 def circle_for_polar_map(axes):
     theta = np.linspace(0, 2*np.pi, 100)
     center, radius = [0.5, 0.5], 0.5

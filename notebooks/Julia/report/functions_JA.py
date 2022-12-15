@@ -10,6 +10,7 @@ def count_ARs(ds, lat_cut):
     '''
     Counts number of AR at each time step. Returns dataset with added coordinate ar_counts_[lat_cut].
     '''
+    warnings.simplefilter('ignore', UserWarning)
     if lat_cut<0:
         pole_ds = ds.sel(lat= slice(-90, lat_cut))
     else:
@@ -26,6 +27,7 @@ def count_ARs(ds, lat_cut):
 
     
 def count_2020_ARs(ds, lat_cut):
+    warnings.simplefilter('ignore', UserWarning)
     if lat_cut<0:
         pole_ds = ds.sel(lat= slice(-90, lat_cut))
     else:
@@ -83,13 +85,16 @@ def sort_ar_by_aod(aod_ds,ar_ds, poll_lim, clean_lim):
     aod_ar['poll_ar_counts']= (['time'], poll_ar_counts)
     return aod_ar
 
-def plot_hist(flat_vars, seasons, plotting_vars, pole_ds, savename,skipmid=True):
+def plot_hist(flat_vars, seasons, plotting_vars, pole_ds, savename, pole, skipmid=True):
     name_vars = ['Cloud fraction [%]', 'Precipitation [mm/day]', 'Surface temperature [K]', 'Downwelling longwave flux [W/m$^2$]']
     keys = ['Clean','Intermediate','Polluted']
     colors = ['tab:blue', 'tab:green','tab:orange']
-    for season in seasons:
-        fig = plt.figure(figsize=(12/4*(len(flat_vars)+1),3), dpi=150)
-        fig.suptitle('Months: ' + str(season))
+    for i,season in enumerate(seasons):
+        fig = plt.figure(figsize=(12/4*(len(flat_vars)+1),3.5), dpi=200)
+        if i ==0:
+            fig.suptitle(pole+'\n'+'Months: ' + str(season))
+        else:
+            fig.suptitle('Months: ' + str(season))
         for ivar, var in enumerate(flat_vars):
             ax = plt.subplot(1,len(flat_vars)+1,ivar+1)
             for ikey, key in enumerate(plotting_vars.keys()):
@@ -110,6 +115,7 @@ def plot_hist(flat_vars, seasons, plotting_vars, pole_ds, savename,skipmid=True)
         ax.pie([counts_sum[count] for count in ['clean_ar_counts','mid_ar_counts','poll_ar_counts']]
                ,labels = keys, colors = colors, autopct='%1.f%%',shadow=True)
         plt.tight_layout()
-        plt.savefig(f'figures/{savename}_{season[0]}.png')  
+        plt.show()
+     #   plt.savefig(f'figures/{savename}_{season[0]}.png')  
     
         
